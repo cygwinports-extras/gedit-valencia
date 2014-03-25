@@ -1,0 +1,29 @@
+--- origsrc/valencia-0.6.0/Makefile	2014-03-17 15:44:43.000000000 -0500
++++ src/valencia-0.6.0/Makefile	2014-03-25 07:16:27.041361500 -0500
+@@ -29,7 +29,7 @@ PACKAGE_VERSIONS = \
+     $(LIBVALA) \
+     vte-2.90 >= 0.27.90
+ 
+-OUTPUTS = libvalencia.so valencia.plugin
++OUTPUTS = cygvalencia.dll valencia.plugin
+ 
+ DIST_FILES = $(SOURCES) \
+              Makefile \
+@@ -42,7 +42,7 @@ DIST_TAR_XZ = $(DIST_TAR).xz
+ 
+ ICON_DIR = ~/.local/share/icons/hicolor/128x128/apps
+ 
+-all: valacheck valencia.plugin libvalencia.so
++all: valacheck valencia.plugin cygvalencia.dll
+ 
+ .PHONY: valacheck
+ valacheck:
+@@ -55,7 +55,7 @@ valencia.plugin: valencia.plugin.m4 Make
+ 	@ type m4 > /dev/null || ( echo 'm4 is missing and is required to build Valencia. ' ; exit 1 )
+ 	m4 -DVERSION='$(VERSION)' valencia.plugin.m4 > valencia.plugin
+ 
+-libvalencia.so: $(SOURCES) Makefile
++cygvalencia.dll: $(SOURCES) Makefile
+ 	@ pkg-config --print-errors --exists '$(PACKAGE_VERSIONS)'
+ 	$(VALAC) $(VFLAGS) -X --shared -X -fPIC $(PACKAGES) $(SOURCES) -o $@
+ 

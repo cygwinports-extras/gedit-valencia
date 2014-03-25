@@ -1,0 +1,40 @@
+ORIG_PN="valencia"
+inherit gnome2
+
+NAME="gedit-valencia"
+VERSION=0.6.0
+RELEASE=1
+CATEGORY="Editors"
+SUMMARY="Vala IDE plugin for gEdit"
+DESCRIPTION="Valencia is a gedit plugin that turns gedit into a lightweight IDE
+for Vala. Using Valencia, you can easily browse between symbols in a Vala
+program.  You can build a Vala program inside gedit and can easily jump to lines
+with build errors. You can also get tooltips for methods and get autocompletion
+suggestions by invoking autocomplete in the appropriate context."
+HOMEPAGE="https://wiki.gnome.org/Projects/Valencia"
+
+PATCH_URI="0.6.0-cygwin-build.patch"
+
+src_compile() {
+	for cflags in ${CFLAGS}
+	do
+		vflags+=" -X ${cflags}"
+	done
+
+	lndirs
+	cd ${B}
+	# save-temps: for debuginfo
+	cygmake LIBVALA=libvala-0.22 VFLAGS="--save-temps ${vflags}"
+}
+
+src_install() {
+	cd ${B}
+	exeinto /usr/lib/gedit/plugins
+	doexe cygvalencia.dll
+
+	insinto /usr/lib/gedit/plugins
+	doins valencia.plugin
+
+	insinto /usr/share/icons/hicolor/128x128/apps
+	doins valencia.png
+}
